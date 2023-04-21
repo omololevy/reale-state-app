@@ -1,11 +1,8 @@
-import { Fragment, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 
 function UserMenu() {
-  const [isOpen, setIsOpen] = useState(false);
-
   return (
-    <Menu as="div" className="relative inline-block text-left">
+    <Menu as="div" className=" relative inline-block text-left">
       {({ open }) => (
         <>
           <div>
