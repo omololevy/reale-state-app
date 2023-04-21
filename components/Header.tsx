@@ -20,8 +20,6 @@ import RouteNavigationButtons from "./RouteNavigationButton";
 import Link from "next/link";
 
 export default function Example() {
-  
-
   return (
     <header className="bg-white">
       <nav
@@ -32,14 +30,13 @@ export default function Example() {
         <div className="flex lg:hidden">
           <button
             type="button"
-            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
-            >
+            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
             <span className="sr-only">Open main menu</span>
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
           </button>
         </div>
 
-        <div className="hidden lg:inline-flex lg:justify-end  items-center ">
+        <div className="hidden lg:inline-flex lg:justify-end align-middle items-center ">
           <UserMenu />
 
           <Link
