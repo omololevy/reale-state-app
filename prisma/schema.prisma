@@ -11,19 +11,9 @@ datasource db {
 }
 
 model User {
-  id             BigInt      @id @default(autoincrement())
-  username       String
-  email          String
+  id             String  @id @default(uuid())
+  username       String  @unique
+  email          String  @unique
   password       String
   isEmailChecked Boolean
-  magicLinks     magicLink[]
-
-  @@unique([email])
-}
-
-model magicLink {
-  id     BigInt @id @default(autoincrement())
-  link   String
-  user   User   @relation(fields: [userId], references: [id])
-  userId BigInt
 }
