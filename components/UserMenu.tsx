@@ -1,10 +1,22 @@
 import { Menu, Transition } from "@headlessui/react";
+import { redirect } from "next/dist/server/api-utils";
+import { MouseEventHandler, use } from "react";
 
-function UserMenu() {
+function UserMenu({user}) {
+ 
+  async function handleSignOut(e: MouseEventHandler<HTMLAnchorElement>) {
+    await fetch("/api/signout", { method: "post", cache: "no-store" }).then(
+      (res) => {
+        if (res.ok) {
+          window.location = window.location.origin + "/signin";
+        }
+      }
+    );
+  }
   return (
     <Menu as="div" className=" relative inline-block text-left">
       {({ open }) => (
-        <>
+        <div>
           <div>
             <Menu.Button className="flex items-center space-x-2">
               <img
@@ -12,7 +24,9 @@ function UserMenu() {
                 src="https://randomuser.me/api/portraits/men/32.jpg"
                 alt="User Avatar"
               />
-              <span className="font-medium text-gray-800">John Doe</span>
+              <span className="font-medium text-gray-800">
+                {user && user.username}
+              </span>
             </Menu.Button>
           </div>
 
@@ -55,7 +69,8 @@ function UserMenu() {
                 <Menu.Item>
                   {({ active }) => (
                     <a
-                      href="#"
+                      onClick={handleSignOut}
+                      MouseEventHandler
                       className={`${
                         active ? "bg-gray-100 text-gray-900" : "text-gray-700"
                       } group flex rounded-md items-center w-full px-2 py-2 text-sm`}>
@@ -66,7 +81,7 @@ function UserMenu() {
               </div>
             </Menu.Items>
           </Transition>
-        </>
+        </div>
       )}
     </Menu>
   );

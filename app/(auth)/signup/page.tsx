@@ -1,10 +1,33 @@
 "use client";
 import Image from "next/image";
 import logo from "../../../assets/images/app-logo.png";
+import { useState } from "react";
 
 const SignUpPage = () => {
+  const [formState, setFormState] = useState({
+    email: "",
+    username: "",
+    password: "",
+    repeatPassword: "",
+  });
   function handleLogin(e: React.FormEvent<HTMLButtonElement>): void {
     e.preventDefault();
+    if (formState.password === formState.repeatPassword) {
+      fetch("/api/signup", {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formState),
+      }).then((res) => {
+        if (res.ok) {
+          window.location.href = `${window.location.origin}/signin`;
+        } else {
+          alert("failed to sign up");
+        }
+      });
+    } else {
+      // handle error for not matching password
+      alert("password and repeat password does not matched!");
+    }
   }
   return (
     <>
@@ -32,6 +55,12 @@ const SignUpPage = () => {
               </div>
               <div className="mt-2">
                 <input
+                  onChange={(e) => {
+                    setFormState((prevState) => ({
+                      ...prevState,
+                      username: e.target.value,
+                    }));
+                  }}
                   id="username"
                   name="username"
                   type="text"
@@ -48,6 +77,12 @@ const SignUpPage = () => {
               </label>
               <div className="mt-2">
                 <input
+                  onChange={(e) => {
+                    setFormState((prevState) => ({
+                      ...prevState,
+                      email: e.target.value,
+                    }));
+                  }}
                   id="email"
                   name="email"
                   type="email"
@@ -67,6 +102,12 @@ const SignUpPage = () => {
               </div>
               <div className="mt-2">
                 <input
+                  onChange={(e) => {
+                    setFormState((prevState) => ({
+                      ...prevState,
+                      password: e.target.value,
+                    }));
+                  }}
                   id="password"
                   name="password"
                   type="password"
@@ -86,6 +127,12 @@ const SignUpPage = () => {
               </div>
               <div className="mt-2">
                 <input
+                  onChange={(e) => {
+                    setFormState((prevState) => ({
+                      ...prevState,
+                      repeatPassword: e.target.value,
+                    }));
+                  }}
                   id="repeat_password"
                   name="repeat_password"
                   type="password"

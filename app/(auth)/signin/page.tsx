@@ -1,10 +1,27 @@
 "use client";
 import Image from "next/image";
 import logo from "../../../assets/images/app-logo.png";
+import { use, useState } from "react";
 
 const SignInPage = () => {
+  const [formState, setFormState] = useState({ email: "", password: "" });
   function handleLogin(e: React.FormEvent<HTMLButtonElement>): void {
     e.preventDefault();
+    try {
+      fetch("/api/signin", {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formState),
+      }).then((res) => {
+        if (res.ok) {
+          window.location.href = window.location.href.replace("/signin", "/");
+        }
+      });
+    } catch (e) {
+      console.log("errrrror", e);
+    }
   }
   return (
     <>
@@ -30,6 +47,12 @@ const SignInPage = () => {
               </label>
               <div className="mt-2">
                 <input
+                  onChange={(e) =>
+                    setFormState((prevState) => ({
+                      ...prevState,
+                      email: e.target.value,
+                    }))
+                  }
                   id="email"
                   name="email"
                   type="email"
@@ -57,6 +80,12 @@ const SignInPage = () => {
               </div>
               <div className="mt-2">
                 <input
+                  onChange={(e) =>
+                    setFormState((prevState) => ({
+                      ...prevState,
+                      password: e.target.value,
+                    }))
+                  }
                   id="password"
                   name="password"
                   type="password"
@@ -69,9 +98,8 @@ const SignInPage = () => {
 
             <div>
               <button
-                type="submit"
                 onClick={handleLogin}
-                className="bg-blue flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                className="flex w-full justify-center rounded-md  px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 bg-purple ">
                 Sign in
               </button>
             </div>
