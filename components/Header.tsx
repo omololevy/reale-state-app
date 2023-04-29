@@ -18,55 +18,90 @@ import {
 import UserMenu from "./UserMenu";
 import RouteNavigationButtons from "./RouteNavigationButton";
 import Link from "next/link";
-async function getAuthUser() {
-  return fetch("/api/authuser", { method: "post" }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-  });
-}
-const p = getAuthUser();
 
-export default function Example() {
-  const user = use(p);
-  console.log("user", user);
+// async function getAuthUser() {
+//   return fetch("/api/authuser", { method: "post" }).then((res) => {
+//     if (res.ok) {
+//       return res.json();
+//     }
+//   });
+// }
+// const p = getAuthUser();
+
+export default function Header({ className = "" }) {
+  const user = {};
+  // const user = use(p);
+  // console.log("user", user);
   return (
-    <div>
-      <header className="bg-white">
-        <nav
-          className="mx-auto flex max-w-7xl items-center justify-between md:p-0 lg:p-4 xl:p-6 lg:px-8"
-          aria-label="Global">
-          <RouteNavigationButtons />
+    <Disclosure>
+      {({ open }) => {
+        console.log("open", open);
+        return (
+          <div className={`bg-gray-dark px-8  ${className}`}>
+            <header className="bg-white h-full w-full flex items-center">
+              <nav
+                className="flex max-w-7xl items-center justify-between "
+                aria-label="Global">
+                <RouteNavigationButtons />
 
-          <div className="flex lg:hidden">
-            <button
-              type="button"
-              className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
-              <span className="sr-only">Open main menu</span>
-              <Bars3Icon className="h-6 w-6" aria-hidden="true" />
-            </button>
+                <div className="flex lg:hidden">
+                  <Disclosure.Button>
+                    {open ? (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-6 h-6 mb-2">
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    ) : (
+                      
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          className="w-6 h-6 ">
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                          />
+                        </svg>
+                    
+                    )}
+                  </Disclosure.Button>
+                </div>
+              </nav>
+              <div className="hidden ml-auto lg:inline-flex justify-end lg:justify-end md:justify-end align-middle items-center ">
+                {!!user && <UserMenu user={user} />}
+
+                {!user && (
+                  <>
+                    <Link
+                      href="/signin"
+                      className="px-2 text-sm font-semibold leading-6 text-gray-900">
+                      Sign In <span aria-hidden="true"></span>
+                    </Link>
+                    <Link
+                      href="/signup"
+                      className="px-2 text-sm font-semibold leading-6 text-gray-900">
+                      Sign Up <span aria-hidden="true"></span>
+                    </Link>
+                  </>
+                )}
+              </div>
+            </header>
           </div>
-
-          <div className="hidden lg:inline-flex lg:justify-end align-middle items-center ">
-            {!!user && <UserMenu user={user} />}
-
-            {!user && (
-              <>
-                <Link
-                  href="/signin"
-                  className="px-2 text-sm font-semibold leading-6 text-gray-900">
-                  Sign In <span aria-hidden="true"></span>
-                </Link>
-                <Link
-                  href="/signup"
-                  className="px-2 text-sm font-semibold leading-6 text-gray-900">
-                  Sign Up <span aria-hidden="true"></span>
-                </Link>
-              </>
-            )}
-          </div>
-        </nav>
-      </header>
-    </div>
+        );
+      }}
+    </Disclosure>
   );
 }
