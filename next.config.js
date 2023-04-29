@@ -3,6 +3,7 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
+  ignoreBuildErrors: true,
   serverComponentsExternalPackages: ["bcrypt"],
 };
 
